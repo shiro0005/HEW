@@ -4,7 +4,7 @@
 #include "collision.h"
 
 
-#define ENEMY_COUNT 10
+#define ENEMY_COUNT 3
 
 void Enemy_Initialize(void);
 void Enemy_Finalize(void);

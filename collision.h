@@ -23,6 +23,4 @@ void Collision_Update(void);
 
 void Collision_Player_vs_Enemy(void);
 
-void Collision_Player_vs_Boss(void);
-
 bool Collision_HitCheck_TileMap(D3DXVECTOR2 dst, D3DXVECTOR2* pOut);

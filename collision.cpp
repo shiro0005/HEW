@@ -2,12 +2,6 @@
 #include "collision.h"
 #include "player.h"
 #include "enemy.h"
-#include "boss.h"
-#include "bullet.h"
-#include "enemybullet.h"
-#include "enemylaser.h"
-#include "bossbullet.h"
-#include "bosslaser.h"
 #include "explosion.h"
 #include "scene.h"
 #include "tilemap.h"
@@ -16,16 +10,6 @@
 
 
 static bool HitCircle(const CIRCLE* pCircle_a, const CIRCLE* pCircle_b);
-void Collision_Player_vs_Enemy(void);
-void Collision_Bullet_vs_Enemy(void);
-void Collision_Player_vs_EnemyBullet(void);
-void Collision_Player_vs_EnemyLaser(void);
-
-void Collision_Player_vs_Boss(void);
-void Collision_Bullet_vs_Boss(void);
-void Collision_Player_vs_BossBullet(void);
-void Collision_Player_vs_BossLaser(void);
-
 
 
 
@@ -120,12 +104,6 @@ void Collision_Initialize(void)
 void Collision_Update(void)
 {
 //	Collision_Player_vs_Enemy();
-	Collision_Bullet_vs_Enemy();
-	Collision_Player_vs_EnemyBullet();
-	Collision_Player_vs_EnemyLaser();
-	Collision_Bullet_vs_Boss();
-	Collision_Player_vs_BossBullet();
-	Collision_Player_vs_BossLaser();
 }
 
 void Collision_Player_vs_Enemy(void)
@@ -142,94 +120,6 @@ void Collision_Player_vs_Enemy(void)
 		{
 			// 当たってる
 			Enemy_Destroy(i);
-		}
-	}
-}
-
-void Collision_Player_vs_EnemyBullet(void)
-{
-	for (int i = 0; i < ENEMYBULLET_MAX; i++) {
-
-		// エネミーは有効か？
-		if (!EnemyBullet_IsEnable(i)) {
-			continue;
-		}
-
-		// プレイヤーのコリジョンとエネミーのコリジョン
-		if (HitCircle(Player_GetCollision(), EnemyBullet_GetCollision(i)))
-		{
-			// 当たってる
-			Player_AddDamage(30);
-
-			// 爆発エフェクトの作成
-			Explosion_Create(EnemyBullet_GetCollision(i)->cx, EnemyBullet_GetCollision(i)->cy);
-
-			// 弾の消滅処理
-			EnemyBullet_Destroy(i);
-		}
-	}
-}
-
-void Collision_Player_vs_EnemyLaser(void)
-{
-	for (int i = 0; i < ENEMYLASER_MAX; i++) {
-
-		// エネミーは有効か？
-		if (!EnemyLaser_IsEnable(i)) {
-			continue;
-		}
-
-		// プレイヤーのコリジョンとレーザーのコリジョン
-		if (HitCupsule(Player_GetCollision(), EnemyLaser_GetCollision(i)))
-		{
-			// 当たってる
-			Player_AddDamage(10);
-
-			// 爆発エフェクトの作成
-			Explosion_Create(Player_GetCollision()->cx, Player_GetCollision()->cy);
-		}
-	}
-}
-
-void Collision_Bullet_vs_Enemy(void) 
-{
-	for (int i = 0; i < BULLET_MAX; i++)
-	{
-		// 弾は有効か？
-		if (!Bullet_IsEnable(i)) {
-			continue;
-		}
-
-		for (int j = 0; j < ENEMY_COUNT; j++)
-		{
-			// エネミーは有効か？
-			if (!Enemy_IsEnable(j)) {
-				continue;
-			}
-
-			// 弾のコリジョンとエネミーのコリジョン
-			if (HitCircle(Bullet_GetCollision(i), Enemy_GetCollision(j)))
-			{
-				// 当たってる
-
-				// 得点の追加・敵の消滅カウントの追加
-
-				
- 				Game_AddScore(100);
-				Game_AddKillCount();
-
-				// 爆発エフェクトの作成
-				Explosion_Create(Enemy_GetCollision(j)->cx, Enemy_GetCollision(j)->cy);
-
-				// 敵の消滅処理
-				Enemy_Destroy(j);
-
-				// 弾の消滅処理
-				Bullet_Destroy(i);
-
-				// この弾の処理は終了
-				break;
-			}
 		}
 	}
 }
@@ -260,124 +150,5 @@ bool Collision_HitCheck_TileMap(D3DXVECTOR2 dst, D3DXVECTOR2* pOut)
 	return hit;
 }
 
-void Collision_Player_vs_Boss(void)
-{
-	for (int i = 0; i < BOSS_COUNT; i++) {
 
-		// ボスは有効か？
-		if (!Boss_IsEnable(i)) {
-			continue;
-		}
-
-		// プレイヤーのコリジョンとボスのコリジョン
-		if (HitCircle(Player_GetCollision(), Boss_GetCollision(i)))
-		{
-			// 当たってる
-			Boss_Destroy(i);
-		}
-	}
-}
-
-void Collision_Player_vs_BossBullet(void)
-{
-	for (int i = 0; i < BOSSBULLET_MAX; i++) {
-
-		// ボスは有効か？
-		if (!BossBullet_IsEnable(i)) {
-			continue;
-		}
-
-		// プレイヤーのコリジョンとボスのコリジョン
-		if (HitCircle(Player_GetCollision(), BossBullet_GetCollision(i)))
-		{
-			// 当たってる
-			Player_AddDamage(30);
-
-			// 爆発エフェクトの作成
-			Explosion_Create(BossBullet_GetCollision(i)->cx, BossBullet_GetCollision(i)->cy);
-
-			// 弾の消滅処理
-			BossBullet_Destroy(i);
-		}
-	}
-}
-
-void Collision_Player_vs_BossLaser(void)
-{
-	for (int i = 0; i < BOSSLASER_MAX; i++) {
-
-		// ボスは有効か？
-		if (!BossLaser_IsEnable(i)) {
-			continue;
-		}
-
-		// プレイヤーのコリジョンとレーザーのコリジョン
-		if (HitCupsule(Player_GetCollision(), BossLaser_GetCollision(i)))
-		{
-			// 当たってる
-			Player_AddDamage(10);
-
-			// 爆発エフェクトの作成
-			Explosion_Create(Player_GetCollision()->cx, Player_GetCollision()->cy);
-		}
-	}
-}
-
-void Collision_Bullet_vs_Boss(void)
-{
-
-	int bosslife = 0;
-	for (int i = 0; i < BULLET_MAX; i++)
-	{
-		
-		// 弾は有効か？
-		if (!Bullet_IsEnable(i)) {
-			continue;
-		}
-
-		for (int j = 0; j < BOSS_COUNT; j++)
-		{
-			// ボスは有効か？
-			if (!Boss_IsEnable(j)) {
-				continue;
-			}
-
-			// 弾のコリジョンとボスのコリジョン
-			if (HitCircle(Bullet_GetCollision(i), Boss_GetCollision(j)))
-			{
-				// 当たってる
-
-
-				Game_AddScore(100);
-
-
-				// 得点の追加・敵の消滅カウントの追加
-
-				bosslife = Boss_AddDamage(500);
-
-				if (bosslife <= 0) {
-					Game_AddKillBossCount();
-
-
-					// 爆発エフェクトの作成
-					Explosion_Create(Enemy_GetCollision(j)->cx, Boss_GetCollision(j)->cy);
-
-					// 敵の消滅処理
-					Boss_Destroy(j);
-
-
-				}
-
-				// 弾の消滅処理
-				Bullet_Destroy(i);
-
-
-				// この弾の処理は終了
-				break;
-			
-
-			}
-		}
-	}
-}
 
