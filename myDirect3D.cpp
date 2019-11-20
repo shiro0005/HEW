@@ -122,6 +122,6 @@ void D3D_Finalize(void)
 }
 
 //Direct3DDeviceÇÃÉQÉbÉ^Å[
-LPDIRECT3DDEVICE9 GetD3DDevice(){
+LPDIRECT3DDEVICE9 GetD3DDevice() {
 	return g_pD3DDevice;
 }

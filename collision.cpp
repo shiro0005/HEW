@@ -1,12 +1,7 @@
 #include "game.h"
 #include "collision.h"
-#include "player.h"
-#include "enemy.h"
-#include "explosion.h"
+
 #include "scene.h"
-#include "tilemap.h"
-#include <d3dx9.h>
-#include "stage.h"
 
 
 static bool HitCircle(const CIRCLE* pCircle_a, const CIRCLE* pCircle_b);
@@ -15,51 +10,53 @@ static bool HitCircle(const CIRCLE* pCircle_a, const CIRCLE* pCircle_b);
 
 bool HitCircle(const CIRCLE* p_circle_a, const CIRCLE* p_circle_b)
 {
-	//ˆø”‚©‚çƒxƒNƒgƒ‹Œ^‚Ì•Ï”‚ðì‚é
+	//å¼•æ•°ã‹ã‚‰ãƒ™ã‚¯ãƒˆãƒ«åž‹ã®å¤‰æ•°ã‚’ä½œã‚‹
 	D3DXVECTOR2 dst1(p_circle_a->cx, p_circle_a->cy);
 	D3DXVECTOR2 dst2(p_circle_b->cx, p_circle_b->cy);
-	//“ñ“_ŠÔ‚ÌƒxƒNƒgƒ‹‚ðì‚é
+	//äºŒç‚¹é–“ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½œã‚‹
 	D3DXVECTOR2 distance = dst2 - dst1;
-	//ì‚Á‚½ƒxƒNƒgƒ‹‚Ì’·‚³‚ð‹‚ß‚é
+	//ä½œã£ãŸãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã‚’æ±‚ã‚ã‚‹
 	float length = D3DXVec2Length(&distance);
-	//‚¨ŒÝ‚¢‚Ì”¼Œa‚ð‘«‚µ‚½’l‚ð‹‚ß‚é
+	//ãŠäº’ã„ã®åŠå¾„ã‚’è¶³ã—ãŸå€¤ã‚’æ±‚ã‚ã‚‹
 	float size = p_circle_a->r + p_circle_b->r;
 
-	//ƒxƒNƒgƒ‹‚Ì’·‚³‚Æ‚¨ŒÝ‚¢‚Ì”¼Œa‚ð‘«‚µ‚½’l‚ð”äŠr‚·‚é
-	//¨ƒxƒNƒgƒ‹‚Ì’·‚³‚Ì•û‚ª¬‚³‚¯‚ê‚Îƒqƒbƒg‚µ‚Ä‚¢‚éI
+	//ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã¨ãŠäº’ã„ã®åŠå¾„ã‚’è¶³ã—ãŸå€¤ã‚’æ¯”è¼ƒã™ã‚‹
+	//â†’ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã®æ–¹ãŒå°ã•ã‘ã‚Œã°ãƒ’ãƒƒãƒˆã—ã¦ã„ã‚‹ï¼
 	if (length < size){
 		return true;
 	}
-	//ƒqƒbƒg‚µ‚Ä‚¢‚È‚©‚Á‚½
+	//ãƒ’ãƒƒãƒˆã—ã¦ã„ãªã‹ã£ãŸ
 	return false;
 }
+
+//TILE_DATA aaa;
 
 /*
 bool HitCircle(const CIRCLE* p_circle_a, const CIRCLE* p_circle_b)
 {
-//ˆø”‚©‚çƒxƒNƒgƒ‹Œ^‚Ì•Ï”‚ðì‚é
+//å¼•æ•°ã‹ã‚‰ãƒ™ã‚¯ãƒˆãƒ«åž‹ã®å¤‰æ•°ã‚’ä½œã‚‹
 D3DXVECTOR2 dst1(p_circle_a->cx, p_circle_a->cy);
 D3DXVECTOR2 dst2(p_circle_b->cx, p_circle_b->cy);
-//“ñ“_ŠÔ‚ÌƒxƒNƒgƒ‹‚ðì‚é
+//äºŒç‚¹é–“ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½œã‚‹
 D3DXVECTOR2 distance = dst2 - dst1;
-//ì‚Á‚½ƒxƒNƒgƒ‹‚Ì’·‚³‚ð‹‚ß‚é
+//ä½œã£ãŸãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã‚’æ±‚ã‚ã‚‹
 float length = D3DXVec2LengthSq(&distance);
-//‚¨ŒÝ‚¢‚Ì”¼Œa‚ð‘«‚µ‚½’l‚ð‹‚ß‚é
+//ãŠäº’ã„ã®åŠå¾„ã‚’è¶³ã—ãŸå€¤ã‚’æ±‚ã‚ã‚‹
 float size = (p_circle_a->r + p_circle_b->r) * (p_circle_a->r + p_circle_b->r);
 
-//ƒxƒNƒgƒ‹‚Ì’·‚³‚Æ‚¨ŒÝ‚¢‚Ì”¼Œa‚ð‘«‚µ‚½’l‚ð”äŠr‚·‚é
-//¨ƒxƒNƒgƒ‹‚Ì’·‚³‚Ì•û‚ª¬‚³‚¯‚ê‚Îƒqƒbƒg‚µ‚Ä‚¢‚éI
+//ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã¨ãŠäº’ã„ã®åŠå¾„ã‚’è¶³ã—ãŸå€¤ã‚’æ¯”è¼ƒã™ã‚‹
+//â†’ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã®æ–¹ãŒå°ã•ã‘ã‚Œã°ãƒ’ãƒƒãƒˆã—ã¦ã„ã‚‹ï¼
 if (length < (p_circle_a->r + p_circle_b->r)){
 return true;
 }
-//ƒqƒbƒg‚µ‚Ä‚¢‚È‚©‚Á‚½
+//ãƒ’ãƒƒãƒˆã—ã¦ã„ãªã‹ã£ãŸ
 return false;
 }
 */
 
 bool HitCupsule(const CIRCLE* p_circle, const CUPSULE* p_cupsule)
 {
-	//‰~‚ÆƒJƒvƒZƒ‹‚ÌˆÊ’u
+	//å††ã¨ã‚«ãƒ—ã‚»ãƒ«ã®ä½ç½®
 	D3DXVECTOR2 cir_pos = D3DXVECTOR2(p_circle->cx, p_circle->cy);
 	D3DXVECTOR2 cup_pos = D3DXVECTOR2(p_cupsule->x, p_cupsule->y);
 	D3DXVECTOR2 cup_end = D3DXVECTOR2(p_cupsule->ex, p_cupsule->ey);
@@ -68,7 +65,7 @@ bool HitCupsule(const CIRCLE* p_circle, const CUPSULE* p_cupsule)
 
 	float t = 0.0f;
 
-	//Œð“_‚ð‹‚ß‚é
+	//äº¤ç‚¹ã‚’æ±‚ã‚ã‚‹
 	t = (cup_end.x * distance.x + cup_end.y * distance.y) /
 		(cup_end.x * cup_end.x  + cup_end.y * cup_end.y);
 
@@ -81,19 +78,19 @@ bool HitCupsule(const CIRCLE* p_circle, const CUPSULE* p_cupsule)
 	pos_cross.x = (cup_end.x * t) + cup_pos.x;
 	pos_cross.y = (cup_end.y * t) + cup_pos.y;
 
-	//Œð“_‚Ü‚Å‚Ì’·‚³‚Æ‚¨ŒÝ‚¢‚Ì”¼Œa‚ð‘«‚µ‚½‚à‚Ì‚Ì‘å‚«‚³‚ð”ä‚×‚é
+	//äº¤ç‚¹ã¾ã§ã®é•·ã•ã¨ãŠäº’ã„ã®åŠå¾„ã‚’è¶³ã—ãŸã‚‚ã®ã®å¤§ãã•ã‚’æ¯”ã¹ã‚‹
 	float cross_len = (pos_cross.x - cir_pos.x) * (pos_cross.x - cir_pos.x) +
                 	  (pos_cross.y - cir_pos.y) * (pos_cross.y - cir_pos.y);
 
 	float size = (p_circle->r + p_cupsule->r);
 
-	//¨ƒxƒNƒgƒ‹‚Ì’·‚³‚Ì•û‚ª¬‚³‚¯‚ê‚Îƒqƒbƒg‚µ‚Ä‚¢‚éI
+	//â†’ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã®æ–¹ãŒå°ã•ã‘ã‚Œã°ãƒ’ãƒƒãƒˆã—ã¦ã„ã‚‹ï¼
 	if (cross_len < size * size)
 	{
 		return true;
 	}
 
-	//ƒqƒbƒg‚µ‚Ä‚¢‚È‚©‚Á‚½
+	//ãƒ’ãƒƒãƒˆã—ã¦ã„ãªã‹ã£ãŸ
 	return false;
 }
 
@@ -103,52 +100,4 @@ void Collision_Initialize(void)
 
 void Collision_Update(void)
 {
-//	Collision_Player_vs_Enemy();
 }
-
-void Collision_Player_vs_Enemy(void)
-{
-	for (int i = 0; i < ENEMY_COUNT; i++) {
-
-		// ƒGƒlƒ~[‚Í—LŒø‚©H
-		if( !Enemy_IsEnable(i) ) {
-			continue;
-		}
-
-		// ƒvƒŒƒCƒ„[‚ÌƒRƒŠƒWƒ‡ƒ“‚ÆƒGƒlƒ~[‚ÌƒRƒŠƒWƒ‡ƒ“
-		if (HitCircle(Player_GetCollision(), Enemy_GetCollision(i)))
-		{
-			// “–‚½‚Á‚Ä‚é
-			Enemy_Destroy(i);
-		}
-	}
-}
-
-
-bool Collision_HitCheck_TileMap(D3DXVECTOR2 dst, D3DXVECTOR2* pOut)
-{
-	TILE_DATA tile;
-	bool hit = false;
-
-	//‰¡‚ÌˆÚ“®ƒ`ƒFƒbƒN
-	tile = GetTileInfo(dst.x + pOut->x, dst.y);
-	if (tile.isWalk == 0)
-	{
-		pOut->x = 0.0f;
-		hit = true;
-	}
-
-	//c‚ÌˆÚ“®ƒ`ƒFƒbƒN
-	tile = GetTileInfo(dst.x, dst.y + pOut->y);
-	//•à‚¯‚È‚¢ƒ}ƒbƒv‚¾‚Á‚½‚çƒqƒbƒg
-	if (tile.isWalk == 0)
-	{
-		pOut->y = 0.0f;
-		hit = true;
-	}
-
-	return hit;
-}
-
-
-

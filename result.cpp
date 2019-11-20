@@ -17,10 +17,7 @@ void Result_Finalize(void)
 
 void Result_Update(void)
 {
-		if (Keyboard_IsTrigger(DIK_R) || GamePad_IsPress(0, BUTTON_C)) {
-			Fade_Start(true, 30, D3DCOLOR_RGBA(0, 0, 0, 0));
-			Scene_Change(SCENE_INDEX_TITLE);
-		}
+
 }
 
 void Result_Draw(void)
