@@ -1,7 +1,7 @@
 #include "scene.h"
-//#include "title.h"
+#include "title.h"
 #include "game.h"
-//#include "result.h"
+#include "result.h"
 
 
 static SCENE_INDEX g_SceneIndex;
@@ -10,9 +10,9 @@ static SCENE_INDEX g_SceneNextIndex;
 typedef void (*SceneFunc)(void);
 
 static const SceneFunc Initialize[] = {
-	//Title_Initialize,
+	Title_Initialize,
 	Game_Initialize,
-	//Result_Initialize,
+	Result_Initialize,
 };
 
 
@@ -27,17 +27,17 @@ void Scene_Finalize(void)
 {
 	switch( g_SceneIndex ) {
 
-		/*case SCENE_INDEX_TITLE:
+	case SCENE_INDEX_TITLE:
 		Title_Finalize();
-		break;*/
+		break;
 
 	case SCENE_INDEX_GAME:
 		Game_Finalize();
 		break;
 
-		/*	case SCENE_INDEX_RESULT:
+	case SCENE_INDEX_RESULT:
 		Result_Finalize();
-		break;*/
+		break;
 	}
 }
 
@@ -45,17 +45,17 @@ void Scene_Update(void)
 {
 	switch( g_SceneIndex ) {
 
-	/*case SCENE_INDEX_TITLE:
+	case SCENE_INDEX_TITLE:
 		Title_Update();
-		break;*/
+		break;
 
 	case SCENE_INDEX_GAME:
 		Game_Update();
 		break;
 
-	/*case SCENE_INDEX_RESULT:
+	case SCENE_INDEX_RESULT:
 		Result_Update();
-		break;*/
+		break;
 	}
 }
 
@@ -63,17 +63,17 @@ void Scene_Draw(void)
 {
 	switch( g_SceneIndex ) {
 
-		/*case SCENE_INDEX_TITLE:
+	case SCENE_INDEX_TITLE:
 		Title_Draw();
-		break;*/
+		break;
 
 	case SCENE_INDEX_GAME:
 		Game_Draw();
 		break;
 
-		/*case SCENE_INDEX_RESULT:
+	case SCENE_INDEX_RESULT:
 		Result_Draw();
-		break;*/
+		break;
 	}
 }
 

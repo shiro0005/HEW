@@ -5,20 +5,24 @@
 
 typedef struct
 {
-	float cx, cy;	//ä¸­å¿ƒåº§æ¨™
-	float r;		//åŠå¾„
+	float cx, cy;	//’†SÀ•W
+	float r;		//”¼Œa
 
 }CIRCLE;
 
 typedef struct
 {
-	float x, y;		//å§‹ç‚¹åº§æ¨™
-	float ex, ey;	//ãƒ™ã‚¯ãƒˆãƒ«æ–¹å‘ï¼ˆçµ‚ç‚¹ï¼‰
-	float r;		//åŠå¾„
+	float x, y;		//n“_À•W
+	float ex, ey;	//ƒxƒNƒgƒ‹•ûŒüiI“_j
+	float r;		//”¼Œa
 
 }CUPSULE;
 
 void Collision_Initialize(void);
 void Collision_Update(void);
 
-(D3DXVECTOR2 dst, D3DXVECTOR2* pOut);
+void Collision_Player_vs_Enemy(void);
+
+void Collision_Player_vs_Boss(void);
+
+bool Collision_HitCheck_TileMap(D3DXVECTOR2 dst, D3DXVECTOR2* pOut);

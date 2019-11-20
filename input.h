@@ -1,26 +1,26 @@
-
+ï»¿
 #pragma once
 
 #include <Windows.h>
 #define DIRECTINPUT_VERSION (0x0800)
 #include <dinput.h>
 
-/* game padî•ñ */
-#define BUTTON_UP		0x00000001l	// •ûŒüƒL[ã(.IY<0)
-#define BUTTON_DOWN		0x00000002l	// •ûŒüƒL[‰º(.IY>0)
-#define BUTTON_LEFT		0x00000004l	// •ûŒüƒL[¶(.IX<0)
-#define BUTTON_RIGHT	0x00000008l	// •ûŒüƒL[‰E(.IX>0)
-#define BUTTON_A		0x00000010l	// ‚`ƒ{ƒ^ƒ“(.rgbButtons[0]&0x80)
-#define BUTTON_B		0x00000020l	// ‚aƒ{ƒ^ƒ“(.rgbButtons[1]&0x80)
-#define BUTTON_C		0x00000040l	// ‚bƒ{ƒ^ƒ“(.rgbButtons[2]&0x80)
-#define BUTTON_X		0x00000080l	// ‚wƒ{ƒ^ƒ“(.rgbButtons[3]&0x80)
-#define BUTTON_Y		0x00000100l	// ‚xƒ{ƒ^ƒ“(.rgbButtons[4]&0x80)
-#define BUTTON_Z		0x00000200l	// ‚yƒ{ƒ^ƒ“(.rgbButtons[5]&0x80)
-#define BUTTON_L		0x00000400l	// ‚kƒ{ƒ^ƒ“(.rgbButtons[6]&0x80)
-#define BUTTON_R		0x00000800l	// ‚qƒ{ƒ^ƒ“(.rgbButtons[7]&0x80)
-#define BUTTON_START	0x00001000l	// ‚r‚s‚`‚q‚sƒ{ƒ^ƒ“(.rgbButtons[8]&0x80)
-#define BUTTON_M		0x00002000l	// ‚lƒ{ƒ^ƒ“(.rgbButtons[9]&0x80)
-#define GAMEPADMAX		4			// “¯‚ÉÚ‘±‚·‚éƒWƒ‡ƒCƒpƒbƒh‚ÌÅ‘å”‚ğƒZƒbƒg
+/* game padæƒ…å ± */
+#define BUTTON_UP		0x00000001l	// æ–¹å‘ã‚­ãƒ¼ä¸Š(.IY<0)
+#define BUTTON_DOWN		0x00000002l	// æ–¹å‘ã‚­ãƒ¼ä¸‹(.IY>0)
+#define BUTTON_LEFT		0x00000004l	// æ–¹å‘ã‚­ãƒ¼å·¦(.IX<0)
+#define BUTTON_RIGHT	0x00000008l	// æ–¹å‘ã‚­ãƒ¼å³(.IX>0)
+#define BUTTON_A		0x00000010l	// ï¼¡ãƒœã‚¿ãƒ³(.rgbButtons[0]&0x80)
+#define BUTTON_B		0x00000020l	// ï¼¢ãƒœã‚¿ãƒ³(.rgbButtons[1]&0x80)
+#define BUTTON_C		0x00000040l	// ï¼£ãƒœã‚¿ãƒ³(.rgbButtons[2]&0x80)
+#define BUTTON_X		0x00000080l	// ï¼¸ãƒœã‚¿ãƒ³(.rgbButtons[3]&0x80)
+#define BUTTON_Y		0x00000100l	// ï¼¹ãƒœã‚¿ãƒ³(.rgbButtons[4]&0x80)
+#define BUTTON_Z		0x00000200l	// ï¼ºãƒœã‚¿ãƒ³(.rgbButtons[5]&0x80)
+#define BUTTON_L		0x00000400l	// ï¼¬ãƒœã‚¿ãƒ³(.rgbButtons[6]&0x80)
+#define BUTTON_R		0x00000800l	// ï¼²ãƒœã‚¿ãƒ³(.rgbButtons[7]&0x80)
+#define BUTTON_START	0x00001000l	// ï¼³ï¼´ï¼¡ï¼²ï¼´ãƒœã‚¿ãƒ³(.rgbButtons[8]&0x80)
+#define BUTTON_M		0x00002000l	// ï¼­ãƒœã‚¿ãƒ³(.rgbButtons[9]&0x80)
+#define GAMEPADMAX		4			// åŒæ™‚ã«æ¥ç¶šã™ã‚‹ã‚¸ãƒ§ã‚¤ãƒ‘ãƒƒãƒ‰ã®æœ€å¤§æ•°ã‚’ã‚»ãƒƒãƒˆ
 
 
 
@@ -39,3 +39,4 @@ void GamePad_Update(void);
 
 BOOL GamePad_IsPress(int padNo, DWORD button);
 BOOL GamePad_IsTrigger(int padNo, DWORD button);
+DIJOYSTATE2 GamePad_Stick();

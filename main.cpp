@@ -1,3 +1,4 @@
+
 #include "main.h"
 #include "myDirect3D.h"
 #include "scene.h"
@@ -5,8 +6,8 @@
 #include "input.h"
 #include "texture.h"
 #include "sprite.h"
+#include "collision.h"
 #include <time.h>
-#include "d3dx9math.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -30,9 +31,9 @@
 // ２Dポリゴン頂点構造体
 typedef struct Vertex2D_tag
 {
-	D3DXVECTOR4 position; // 頂点座標（座標変換済み頂点）
-	D3DCOLOR	color;    // 頂点カラー(32Bit ARGB指定)
-	D3DXVECTOR2 texcoord; // テクスチャ座標
+    D3DXVECTOR4 position; // 頂点座標（座標変換済み頂点）
+    D3DCOLOR	color;    // 頂点カラー(32Bit ARGB指定)
+    D3DXVECTOR2 texcoord; // テクスチャ座標
 } Vertex2D;
 #define FVF_VERTEX2D (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1) // ２Dポリゴン頂点フォーマット
 
@@ -82,7 +83,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 
 	// ウィンドウスタイル
-	DWORD window_style = WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME);
+	DWORD window_style = WS_OVERLAPPEDWINDOW & ~(WS_THICKFRAME);
 
 	// 基本矩形座標
 	RECT window_rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
@@ -116,7 +117,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		NULL,           // メニューハンドル
 		hInstance,      // インスタンスハンドル
 		NULL            // 追加のアプリケーションデータ
-	);
+		);
 
 	if (g_hWnd == NULL) {
 		// ウィンドウハンドルが何らかの理由で生成出来なかった
@@ -164,8 +165,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_CLOSE:
-		//		if (MessageBox(hWnd, "本当に終了してよろしいですか？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
-		DestroyWindow(hWnd); // 指定のウィンドウにWM_DESTROYメッセージを送る
+//		if (MessageBox(hWnd, "本当に終了してよろしいですか？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
+			DestroyWindow(hWnd); // 指定のウィンドウにWM_DESTROYメッセージを送る
 //		}
 		return 0; // DefWindowProc関数にメッセージを流さず終了することによって何もなかったことにする
 
@@ -184,16 +185,16 @@ bool Initialize(HINSTANCE hInst)
 	srand((unsigned int)time(NULL));
 
 	// ゲームの初期化(Direct3Dの初期化)
-	if (!D3D_Initialize(g_hWnd)) {
+	if (!D3D_Initialize(g_hWnd)){
 		// ゲームの初期化に失敗した
 		return false;
 	}
 	// DirectInputの初期化（キーボード）
-	if (!Keyboard_Initialize(hInst, g_hWnd)) {
+	if (!Keyboard_Initialize(hInst, g_hWnd)){
 		return false;
 	}
 	// DirectInputの初期化（ゲームパッド）
-	if (!GamePad_Initialize(hInst, g_hWnd)) {
+	if (!GamePad_Initialize(hInst, g_hWnd)){
 		return false;
 	}
 
@@ -202,7 +203,8 @@ bool Initialize(HINSTANCE hInst)
 
 	Fade_Initialize();
 	Scene_Initialize(SCENE_INDEX_TITLE);
-
+	Collision_Initialize();
+	
 	return true;
 }
 
@@ -227,7 +229,7 @@ void Update(void)
 	//キーボードの状態を更新する
 	Keyboard_Update();
 
-
+	
 	//キーボードの状態を更新する
 	GamePad_Update();
 
@@ -269,7 +271,7 @@ void Draw(void)
 }
 
 //ウィンドウハンドルのゲッター
-HWND GetHWND() {
+HWND GetHWND(){
 	return g_hWnd;
 }
 

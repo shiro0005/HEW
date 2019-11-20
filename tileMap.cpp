@@ -69,7 +69,7 @@ void TileMap_Update(void)
 
 void TileMap_Draw(void)
 {
-	float w = TILEMAP_SIZE_W / TILEMAP_DIVIDE_X;
+	/*float w = TILEMAP_SIZE_W / TILEMAP_DIVIDE_X;
 	float h = TILEMAP_SIZE_H / TILEMAP_DIVIDE_Y;
 
 	for (int y = 0; y < TILETABLE_TABLE_SIZE_Y; y++)
@@ -84,7 +84,9 @@ void TileMap_Draw(void)
 				w,
 				h);
 		}
-	}
+	}*/
+
+	Sprite_Draw(TEXTURE_INDEX_BGMAIN, 0.0f, 0.0f);
 }
 
 TILE_DATA GetTileInfo(float x, float y)

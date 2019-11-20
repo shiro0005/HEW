@@ -33,7 +33,7 @@ typedef struct
 	int			animePattern;	//アニメパターン
 	int			animeFrame;		//パターン切り替えウエイト
 
-	CIRCLE		collision;
+	CUPSULE		collision;
 
 	int			frame;
 	int			frame_alpha;
@@ -99,8 +99,8 @@ void Boss_Update(void)
 	for (int i = 0; i < BOSS_COUNT; i++) {
 
 		//当たり判定用座標の更新
-		boss[i].collision.cx = boss[i].pos.x;
-		boss[i].collision.cy = boss[i].pos.y;
+		boss[i].collision.x = boss[i].pos.x;
+		boss[i].collision.y = boss[i].pos.y;
 
 		//スキップするフレーム値を超えたら
 		if (++boss[i].animeFrame > ANIME_PATTERN_SKIPFRAME)
@@ -179,7 +179,7 @@ bool Boss_IsEnable(int index)
 	return boss[index].enable;
 }
 
-const CIRCLE* Boss_GetCollision(int index)
+const CUPSULE* Boss_GetCollision(int index)
 {
 	return &boss[index].collision;
 }
@@ -230,8 +230,8 @@ void Boss_StateInit(int index)//ボス出現情報
 	boss[index].muki = rand() % 4;
 	boss[index].enable = TRUE;
 
-	boss[index].collision.cx = boss[index].pos.x;
-	boss[index].collision.cy = boss[index].pos.y;
+	boss[index].collision.x = boss[index].pos.x;
+	boss[index].collision.y = boss[index].pos.y;
 	boss[index].collision.r = BOSS_WIDTH * 0.8f;
 
 	boss[index].frame = 0;
@@ -266,7 +266,7 @@ void Boss_StateSearch(int index)
 	}
 
 	//プレイヤーの座標を取得する
-	D3DXVECTOR2 pl_pos = D3DXVECTOR2(Player_GetCollision()->cx, Player_GetCollision()->cy);
+	D3DXVECTOR2 pl_pos = D3DXVECTOR2(Player_GetCollision()->x, Player_GetCollision()->y);
 
 	//敵とプレイヤーの距離を計算する
 	D3DXVECTOR2 vLen = boss[index].pos - pl_pos;
@@ -326,7 +326,7 @@ void Boss_StateChase(int index)
 	boss[index].frame++;
 
 	//プレイヤーの座標を取得する
-	D3DXVECTOR2 pl_pos = D3DXVECTOR2(Player_GetCollision()->cx, Player_GetCollision()->cy);
+	D3DXVECTOR2 pl_pos = D3DXVECTOR2(Player_GetCollision()->x, Player_GetCollision()->y);
 
 	D3DXVECTOR2 dir = pl_pos - boss[index].pos;
 	D3DXVec2Normalize(&dir, &dir);
@@ -424,7 +424,7 @@ void Boss_StateReturn(int index)
 	boss[index].frame++;
 
 	//プレイヤーの座標を取得する
-	D3DXVECTOR2 pl_pos = D3DXVECTOR2(Player_GetCollision()->cx, Player_GetCollision()->cy);
+	D3DXVECTOR2 pl_pos = D3DXVECTOR2(Player_GetCollision()->x, Player_GetCollision()->y);
 
 	//帰還する座標への向きベクトルを計算する
 	D3DXVECTOR2 dir = boss[index].pos_return - boss[index].pos;

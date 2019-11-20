@@ -7,7 +7,8 @@ void Player_Initialize(void);
 void Player_Finalize(void);
 void Player_Update(void);
 void Player_Draw(void);
-const CIRCLE* Player_GetCollision();
+const CUPSULE* Player_GetCollision();
 
 void Player_AddDamage(int damage);
+float Player_Getdir();
 int Player_GetHitPoint();
